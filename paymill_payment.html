@@ -57,7 +57,9 @@
                     exp_month:$('.card-expiry-month').val(),
                     exp_year:$('.card-expiry-year').val(),
                     cvc:$('.card-cvc').val(),
-                    cardholdername:$('.card-holdername').val()
+                    cardholdername:$('.card-holdername').val(),
+                    amount:$('.amount').val(),
+                    currency:$('.currency').val()
                 }, PaymillResponseHandler);
 
                 return false;
@@ -88,6 +90,12 @@
         <span> / </span>
 
         <input class="card-expiry-year" type="text" size="4" value="2015"/></div>
+
+    <div class="form-row"><label>Betrag</label>
+        <input class="amount" type="text" size="5" value="10.00"/></div>
+
+    <div class="form-row"><label>Währung</label>
+        <input class="currency" type="text" size="3" value="EUR"/></div>
 
     <button class="submit-button" type="submit">Abschicken</button>
 </form>

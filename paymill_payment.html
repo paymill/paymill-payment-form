@@ -69,36 +69,44 @@
     </script>
 </head>
 <body>
-<h1>Paymill Test</h1>
+  <h1>Paymill Test</h1>
 
-<div class="payment-errors"></div>
+  <div class="payment-errors"></div>
+  <form id="payment-form" action="request.php" method="POST">
+    <div class="form-row">
+      <label>Kartennummer</label>
+      <input class="card-number" type="text" size="20" value="4111111111111111"/>
+    </div>
 
-<form id="payment-form" action="request.php" method="POST">
+    <div class="form-row">
+      <label>CVC</label>
+      <input class="card-cvc" type="text" size="4" value="111"/>
+    </div>
 
-    <div class="form-row"><label>Kartennummer</label>
-        <input class="card-number" type="text" size="20" value="4111111111111111"/></div>
+    <div class="form-row">
+      <label>Karteninhaber</label>
+      <input class="card-holdername" type="text" size="20" value="lala"/>
+    </div>
 
-    <div class="form-row"><label>CVC</label>
-        <input class="card-cvc" type="text" size="4" value="111"/></div>
+    <div class="form-row">
+      <label>Gültigkeitsdatum (MM/YYYY)</label>
+      <input class="card-expiry-month" type="text" size="2" value="12"/>
+      <span> / </span>
+      <input class="card-expiry-year" type="text" size="4" value="2015"/>
+    </div>
 
-    <div class="form-row"><label>Karteninhaber</label>
-        <input class="card-holdername" type="text" size="20" value="lala"/></div>
+    <div class="form-row">
+      <label>Betrag</label>
+      <input class="amount" type="text" size="5" value="10.00"/>
+    </div>
 
-    <div class="form-row"><label>Gültigkeitsdatum (MM/YYYY)</label>
-        <input class="card-expiry-month" type="text" size="2" value="12"/>
-
-        <span> / </span>
-
-        <input class="card-expiry-year" type="text" size="4" value="2015"/></div>
-
-    <div class="form-row"><label>Betrag</label>
-        <input class="amount" type="text" size="5" value="10.00"/></div>
-
-    <div class="form-row"><label>Währung</label>
-        <input class="currency" type="text" size="3" value="EUR"/></div>
+    <div class="form-row">
+      <label>Währung</label>
+      <input class="currency" type="text" size="3" value="EUR"/>
+    </div>
 
     <button class="submit-button" type="submit">Abschicken</button>
-</form>
+  </form>
 
 </body>
 </html>

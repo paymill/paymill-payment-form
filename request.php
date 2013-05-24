@@ -20,7 +20,7 @@
                 )
         );
 
-        if ($token = $_POST['paymillToken']) {
+        if (isset($_POST['paymillToken'])) {
             require "Services/Paymill/Transactions.php";
             require "Services/Paymill/Clients.php";
             require "Services/Paymill/Payments.php";
@@ -36,7 +36,7 @@
             $client = $clientObject->create($clientParam);
 
             $paymentParam = array(
-                'token' => $token,
+                'token' => $_POST['paymillToken'],
                 'client' => $client['id']
             );
             $payment = $paymentObject->create($paymentParam);

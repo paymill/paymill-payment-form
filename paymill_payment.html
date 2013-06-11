@@ -37,7 +37,7 @@
                     $(".submit-button").text(lang["form"]["submit-button"]);
                 }
 
-                $('.card-number').keypress(function() {
+                $('.card-number').keyup(function() {
                     switch(paymill.cardType($('.card-number').val())){
                         case 'Visa':
                             $('.card-icon').html('<img src="image/icon_visa.png" >');
@@ -148,14 +148,19 @@
                 });
                 // Toggle buttons and forms
                 $(".paymenttype").click(function (event) {
-                    $(this).addClass('btn-primary disabled');
-                    $('#payment-form-cc').toggle();
-                    $('#payment-form-elv').toggle();
+                    if($(this).hasClass('btn-primary disabled')){
+                        return false;
+                    }
                     if($(this).val()=='cc') {
                         $('#btn-paymenttype-elv').removeClass('btn-primary disabled');
-                    }
-                    else {
+                        $('#btn-paymenttype-cc').addClass('btn-primary disabled');
+                        $('#payment-form-cc').toggle();
+                        $('#payment-form-elv').toggle();
+                    } else {
                         $('#btn-paymenttype-cc').removeClass('btn-primary disabled');
+                        $('#btn-paymenttype-elv').addClass('btn-primary disabled');
+                        $('#payment-form-cc').toggle();
+                        $('#payment-form-elv').toggle();
                     }
                 });
                 translateForm(formlang);

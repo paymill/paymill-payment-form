@@ -1,67 +1,223 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="css/normalize.min.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-        <script type="text/javascript" src="https://rawgithub.com/paymill/paymill-payment-form/master/js/vendor/modernizr-2.6.2.min.js"></script>
+        <meta charset="utf-8" />
+        <style>
+            * {
+                font-family:'lucida grande', tahoma, verdana, arial, sans-serif;
+                font-size: 14px;
+            }
+            h2 {
+                font-size:16px;
+                margin-left: 20px;
+            }
+            .box {
+                border:1px #eee solid; 
+                background: #fafafa; 
+                padding: 10px; 
+                margin: 20px;
+            }
+            strong {
+                margin-top:5px;
+                margin-bottom:15px;
+                display: block;
+            }
+            button {
+                margin-top:15px;
+                display: inline-block; *display: inline; *zoom: 1; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 20px; *line-height: 20px; color: #333333; text-align: center; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; cursor: pointer; background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(top, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0); border-color: #e6e6e6 #e6e6e6 #bfbfbf; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); *background-color: #e6e6e6; filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); border: 1px solid #cccccc; *border: 0; border-bottom-color: #b3b3b3; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; *margin-left: .3em; -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05); -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05); box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+
+            }
+            .submit-button {
+                margin-left:305px;
+            }
+            label { 
+                position: absolute; 
+                text-align: right; 
+                width: 150px;
+                line-height: 2.0; 
+            }
+            input { 
+                margin-left: 160px; 
+            }
+        </style>
+        <script type="text/javascript" src="//bridge.chipmunk.dev/"></script>
+        <script type="text/javascript" src="//static.chipmunk.dev/assets/js/jquery/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript">
+
+        var PAYMILL_PUBLIC_KEY = '...';
+        var PAYMILL_TEST_MODE  = true;
+
+        $(document).ready(function() {
+
+            $("#apikey-form").submit(function(event) {
+                event.preventDefault();
+                var key = $(".api-key").val();
+                logResponse(key);
+                PAYMILL_PUBLIC_KEY = key;
+            });
+
+            // Legacy credit card form
+            $("#card-form").submit(function(event) {
+                event.preventDefault();
+                try {
+                    paymill.createToken({
+                        number:     $('#card-form .card-number').val(),
+                        exp_month:  $('#card-form .card-expiry-month').val(),
+                        exp_year:   $('#card-form .card-expiry-year').val(),
+                        cvc:        $('#card-form .card-cvc').val(),
+                        cardholder: $('#card-form .card-holdername').val()
+                    }, PaymillResponseHandler);
+                } catch(e) {
+                    logResponse(e.message);
+                }
+            });
+
+            // 3d secure credit card form
+            $("#card-tds-form").submit(function(event) {
+                event.preventDefault();
+                try {
+                    paymill.createToken({
+                        number:     $('#card-tds-form .card-number').val(),
+                        exp_month:  $('#card-tds-form .card-expiry-month').val(),
+                        exp_year:   $('#card-tds-form .card-expiry-year').val(),
+                        cvc:        $('#card-tds-form .card-cvc').val(),
+                        cardholder: $('#card-tds-form .card-holdername').val(),
+                        amount: $('#card-tds-form .card-amount').val(),
+                        currency: $('#card-tds-form .card-currency').val()
+                    }, PaymillResponseHandler);
+                } catch(e) {
+                    logResponse(e.message);
+                }
+            });
+
+            // direct debit form
+            $("#debit-form").submit(function(event) {
+                event.preventDefault();
+                try {
+                    paymill.createToken({
+                        number: $('.debit-number').val(),
+                        bank:  $('.debit-bank').val(),
+                        country:   $('.debit-country').val(),
+                        accountholder: $('.debit-holdername').val()
+                    }, PaymillResponseHandler);
+                } catch(e) {
+                    logResponse(e.message);
+                }
+            });
+
+            $("#debit-form .debit-bank").bind("paste cut keydown",function(e) {
+                var that = this;
+                setTimeout(function() {
+                    paymill.getBankName($(that).val(), function(error, result) {
+                        error ? logResponse(error.apierror) : $(".debit-bankname").val(result);
+                    });
+                }, 200);
+            });
+        });
+
+        function PaymillResponseHandler(error, result) {
+            error ? logResponse(error.apierror) : logResponse(result.token);
+        }
+
+        function logResponse(res) {
+            // create console.log to avoid errors in old IE browsers
+            if (!window.console) console = {log:function(){}};
+
+            console.log(res);
+            if(PAYMILL_TEST_MODE)
+                $('.debug').text(res).show().fadeOut(3000);
+        }
+
+        // TODO add CSS3 spinner graphics, IE graceful degradation 
+        </script>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-
-        <form id="payment-form" method="POST">
-            <div>Credit card form</div>
-            <div class="payment-errors"></div>
-            <div class="form-row">
-              <label>Card number</label>
-              <input class="card-number" type="text" size="20" value="4111111111111111"/>
+        <div style="width:960px;margin:0 auto;">
+            <div style="width:440px;float:left;">
+                <h2>Payment form types</h2>
+                <div class="box">
+                    <strong>Legacy credit card</strong>
+                    <form id="card-form" action="#" method="POST">
+                        <label>Credit card number</label>
+                        <input class="card-number" type="text" size="20" value="4111111111111111" />
+                        <br>
+                        <label>CVC</label>
+                        <input class="card-cvc" type="text" maxlength="4" size="4" value="123" />
+                        <br>
+                        <label>Card holder</label>
+                        <input class="card-holdername" type="text" size="20" value="Max Mustermann" />
+                        <br>
+                        <label>Expiry (MM/YYYY)</label>
+                        <input class="card-expiry-month" type="text" size="2" value="12" maxlength="2" />
+                        <input class="card-expiry-year" type="text" size="4" value="2015" maxlength="4" style="margin-left: 0px;" />
+                        <br>
+                        <button class="submit-button" type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="box">
+                    <strong>3DS credit card</strong>
+                    <form id="card-tds-form" action="#" method="POST">
+                        <label>Credit card number</label>
+                        <input class="card-number" type="text" size="20" value="4012888888881881" />
+                        <br>
+                        <label>CVC</label>
+                        <input class="card-cvc" type="text" maxlength="4" size="4" value="123" />
+                        <br>
+                        <label>Card holder</label>
+                        <input class="card-holdername" type="text" size="20" value="Max Mustermann" />
+                        <br>
+                        <label>Expiry (MM/YYYY)</label>
+                        <input class="card-expiry-month" type="text" size="2" value="12" maxlength="2" />
+                        <input class="card-expiry-year" type="text" size="4" value="2015" maxlength="4" style="margin-left: 0px;" />
+                        <br>
+                        <label>Amount</label>
+                        <input class="card-amount" type="text" size="4" value="123.45" />
+                        <br>
+                        <label>Currency</label>
+                        <input class="card-currency" type="text" size="4" value="EUR" />
+                        <br>
+                        <button class="submit-button" type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="box">
+                    <strong>Direct debit</strong>
+                    <form id="debit-form" action="#" method="POST">
+                        <label>Account number</label>
+                        <input class="debit-number" maxlength="10" type="text" size="20" value="12345678" />
+                        <br>
+                        <label>Bank code number</label>
+                        <input class="debit-bank" maxlength="8" type="text" size="20" value="1001001" />
+                        <br>
+                         <!--[if gte IE 8]><!-->
+                        <label>Bank name</label>
+                        <input class="debit-bankname" type="text" size="20" disabled="disabled" style="background-color:#eee;" />
+                        <br>
+                        <!--<![endif]-->
+                        <label>Account holder</label>
+                        <input class="debit-holdername" type="text" size="20" value="Max Mustermann" />
+                        <br>
+                        <label>Country</label>
+                        <input class="debit-country" type="text" size="20" value="Deutschland" />
+                        <br>
+                        <button class="submit-button" type="submit">Submit</button>
+                    </form>
+                </div>
             </div>
+            <div style="float:left;width:440px;height:300px;">
+                <h2>Debug panel</h2>
+                <div class="box" style="height:50px;">
+                    <p class="debug"></p>
+                </div>
 
-            <div class="form-row">
-              <label>CVC</label>
-              <input class="card-cvc" type="text" size="4" value="111"/>
+                <h2>Change Paymill Public API Key</h2>
+                <div class="box">
+                    <form id="apikey-form" action="#" method="POST">
+                        <input class="api-key" type="text" size="29" value="" style="margin-left: 0px;" />
+                        <button class="setkey-button" type="submit" style="margin-top:0;">Submit</button>
+                    </form>
+                </div>
             </div>
-
-            <div class="form-row">
-              <label>Card holder</label>
-              <input class="card-holdername" type="text" size="20" value="lala"/>
-            </div>
-
-            <div class="form-row">
-              <label>Card Expiry Date (MM/YYYY)</label>
-              <input class="card-expiry-month" type="text" size="2" value="12"/>
-              <span> / </span>
-              <input class="card-expiry-year" type="text" size="4" value="2015"/>
-            </div>
-
-            <div class="form-row">
-              <label>Amount</label>
-              <input class="amount" type="text" size="5" value="10.00"/>
-            </div>
-
-            <div class="form-row">
-              <label>Currency</label>
-              <input class="currency" type="text" size="3" value="EUR"/>
-            </div>
-
-            <button class="submit-button" type="submit">Submit</button>
-        </form>
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-        <script type="text/javascript" src="https://bridge.paymill.de/"></script>
-        <script type="text/javascript" src="https://rawgithub.com/paymill/paymill-payment-form/master/js/plugins.js"></script>
-        <script type="text/javascript" src="https://rawgithub.com/paymill/paymill-payment-form/master/js/main.js"></script>
+        </div>
     </body>
 </html>

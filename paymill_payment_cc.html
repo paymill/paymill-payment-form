@@ -30,7 +30,7 @@
                     $(".submit-button").text(lang["form"]["submit-button"]);
                 }
 
-                $('.card-number').keypress(function() {
+                $('.card-number').keyup(function() {
                     switch(paymill.cardType($('.card-number').val())){
                         case 'Visa':
                             $('.card-icon').html('<img src="image/icon_visa.png" >');

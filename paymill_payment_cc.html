@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <script type="text/javascript">
+            var PAYMILL_PUBLIC_KEY = 'YOUR_PUBLIC_API_KEY';
+        </script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.no-responsive.no-icons.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://bridge.paymill.de/"></script>
+        <script type="text/javascript" src="lang/translation.js"></script>
+        <script type="text/javascript">
+            $.noConflict();
+            jQuery(document).ready(function ($) {
+                var formlang = 'de';
+                function translateForm(language){
+                    formlang = language;
+                    var lang;
+                    if(translation[language] === undefined){
+                        lang = translation['en'];
+                    }else{
+                        lang = translation[language];
+                    }
+                    $(".card-number-label").text(lang["form"]["card-number"]);
+                    $(".card-cvc-label").text(lang["form"]["card-cvc"]);
+                    $(".card-holdername-label").text(lang["form"]["card-holdername"]);
+                    $(".card-expiry-label").text(lang["form"]["card-expiry"]);
+                    $(".amount-label").text(lang["form"]["amount"]);
+                    $(".currency-label").text(lang["form"]["currency"]);
+                    $(".submit-button").text(lang["form"]["submit-button"]);
+                }
+
+                $('.card-number').keyup(function() {
+                    switch(paymill.cardType($('.card-number').val())){
+                        case 'Visa':
+                            $('.card-icon').html('<img src="image/icon_visa.png" >');
+                            $('.card-icon').show();
+                            break;
+                        case 'MasterCard':
+                            $('.card-icon').html('<img src="image/icon_mastercard.png" >');
+                            $('.card-icon').show();
+                            break;
+                        default:
+                            $('.card-icon').hide();
+                            break;
+                    }
+                });
+
+                function PaymillResponseHandler(error, result) {
+                    if (error) {
+                        // Zeigt den Fehler überhalb des Formulars an
+                        $(".payment-errors").text(error.apierror);
+                        $(".payment-errors").css("display","inline-block");
+                    } else {
+                        $(".payment-errors").css("display","none");
+                        $(".payment-errors").text("");
+                        var form = $("#payment-form");
+                        // Token
+                        var token = result.token;
+                        // Token in das Formular einfügen damit es an den Server übergeben wird
+                        form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
+                        form.get(0).submit();
+                    }
+                    $(".submit-button").removeAttr("disabled");
+                }
+                $("#payment-form").submit(function (event) {
+                    // Absenden Button deaktivieren um weitere Klicks zu vermeiden
+                    $('.submit-button').attr("disabled", "disabled");
+                    if (false == paymill.validateCardNumber($('.card-number').val())) {
+                        $(".payment-errors").text(translation[formlang]["error"]["invalid-card-number"]);
+                        $(".payment-errors").css("display","inline-block");
+                        $(".submit-button").removeAttr("disabled");
+                    }
+                    if (false == paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
+                        $(".payment-errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
+                        $(".payment-errors").css("display","inline-block");
+                        $(".submit-button").removeAttr("disabled");
+                    }
+
+                    if ($('.card-holdername').val() == '') {
+                        $(".payment-errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
+                        $(".payment-errors").css("display","inline-block");
+                        $(".submit-button").removeAttr("disabled");
+                    }
+
+                    paymill.createToken({
+                        number:     $('.card-number').val(),
+                        exp_month:  $('.card-expiry-month').val(),
+                        exp_year:   $('.card-expiry-year').val(),
+                        cvc:        $('.card-cvc').val(),
+                        cardholder: $('.card-holdername').val(),
+                        amount_int: $('.amount').val() * 100,
+                        currency:   $('.currency').val()
+                    }, PaymillResponseHandler);
+                    return false;
+                });
+                $("#language_switch").click(function(){
+                    var language = formlang;
+                    var newimg;
+                    if(formlang == 'en'){
+                        newimg = "image/gb.png";
+                        language = "de";
+                    }else{
+                        newimg = "image/de.png";
+                        language = "en";
+                    }
+                    $(this).attr("src", newimg);
+                    translateForm(language);
+                });
+
+                translateForm(formlang);
+            });
+        </script>
+    </head>
+    <body>
+        <form id="payment-form" class="well span4" action="request.php" method="POST">
+            <img src="image/gb.png" id="language_switch" style="float: right;">
+            <p class="payment-errors alert-error span3" style="display:none;"></p>
+            <div class="controls controls-row">
+                <div class="span2">
+                    <label class="card-number-label"></label>
+                    <input class="card-number span2" type="text" size="20" value="4111111111111111"/>
+                </div>
+                <div class="span1">
+                    <label class="card-cvc-label"></label>
+                    <input class="card-cvc span1" type="text" size="4" value="111"/>
+                </div>
+            </div>
+            <div class="controls controls-row">
+                <div class="span3 card-icon"></div>
+            </div>
+            <div class="controls controls-row">
+                <div class="span3">
+                    <label class="card-holdername-label"></label>
+                    <input class="card-holdername span3" type="text" size="20" value="lala"/>
+                </div>
+            </div>
+            <div class="controls controls-row">
+                <div class="span3">
+                    <label class="card-expiry-label"></label>
+                    <input class="card-expiry-month span1" type="text" size="2" value="12"/>
+
+                    <span style="float:left;"> / </span>
+
+                    <input class="card-expiry-year span1" type="text" size="4" value="2015"/>
+                </div>
+            </div>
+            <div class="controls controls-row">
+                <div class="span2">
+                    <label class="amount-label"></label>
+                    <input class="amount span2" type="text" size="5" value="10.00" name="amount"/>
+                </div>
+                <div class="span1">
+                    <label class="currency-label"></label>
+                    <input class="currency span1" type="text" size="3" value="EUR" name="currency"/>
+                </div>
+            </div>
+            <div class="controls controls-row">
+                <div class="span4">
+                    <button class="submit-button btn btn-primary" type="submit">Abschicken</button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

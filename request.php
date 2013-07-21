@@ -12,7 +12,7 @@
         //
 
         define('PAYMILL_API_HOST', 'https://api.paymill.com/v2/');
-        define('PAYMILL_API_KEY', '98842d23994110d6986339436349b0fe');
+        define('PAYMILL_API_KEY', 'YOUR_API_KEY');
         set_include_path(
                 implode(PATH_SEPARATOR, array(
                     realpath(realpath(dirname(__FILE__)) . '/lib'),

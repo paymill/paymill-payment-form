@@ -31,25 +31,25 @@ translation["de"]["error"]["invalid-elv-bankcode"] = 'Bitte geben Sie eine gült
 //Creditcard
 translation["en"] = new Object();
 translation["en"]["form"] = new Object();
-translation["en"]["form"]["card-paymentname"] = 'Creditcard';
-translation["en"]["form"]["card-number"] = 'Cardnumber';
+translation["en"]["form"]["card-paymentname"] = 'Credit card';
+translation["en"]["form"]["card-number"] = 'Card number';
 translation["en"]["form"]["card-cvc"] = 'CVC';
-translation["en"]["form"]["card-holdername"] = 'Cardholder';
+translation["en"]["form"]["card-holdername"] = 'Card holder';
 translation["en"]["form"]["card-expiry"] = 'Valid until (MM/YYYY)';
 translation["en"]["form"]["amount"] = 'Amount';
 translation["en"]["form"]["currency"] = 'Currency';
 translation["en"]["form"]["submit-button"] = 'Submit';
 //Elv
-translation["en"]["form"]["elv-paymentname"] = 'Directdebit';
-translation["en"]["form"]["elv-account"] = 'Accountnumber';
-translation["en"]["form"]["elv-holdername"] = 'Accountholder';
-translation["en"]["form"]["elv-bankcode"] = 'Bankcode';
+translation["en"]["form"]["elv-paymentname"] = 'Direct debit';
+translation["en"]["form"]["elv-account"] = 'Account number';
+translation["en"]["form"]["elv-holdername"] = 'Account holder';
+translation["en"]["form"]["elv-bankcode"] = 'Bank code';
 
 //Error
 translation["en"]["error"] = new Object();
-translation["en"]["error"]["invalid-card-number"] = 'Invalid cardnumber.';
-translation["en"]["error"]["invalid-card-expiry-date"] = 'Invalid expire-date.';
-translation["en"]["error"]["invalid-card-holdername"] = 'Please enter the cardholders name.';
-translation["en"]["error"]["invalid-elv-holdername"] = 'Please enter the accountholders name.';
-translation["en"]["error"]["invalid-elv-accountnumber"] = 'Please enter a valid accountnumber.';
-translation["en"]["error"]["invalid-elv-bankcode"] = 'Please enter a valid bankcode.';
+translation["en"]["error"]["invalid-card-number"] = 'Invalid card number.';
+translation["en"]["error"]["invalid-card-expiry-date"] = 'Invalid expire date.';
+translation["en"]["error"]["invalid-card-holdername"] = 'Please enter the card holder name.';
+translation["en"]["error"]["invalid-elv-holdername"] = 'Please enter the account holder name.';
+translation["en"]["error"]["invalid-elv-accountnumber"] = 'Please enter a valid account number.';
+translation["en"]["error"]["invalid-elv-bankcode"] = 'Please enter a valid bank code.';

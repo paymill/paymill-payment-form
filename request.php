@@ -25,28 +25,28 @@
             require "Services/Paymill/Payments.php";
 
             $transactionsObject = new Services_Paymill_Transactions(PAYMILL_API_KEY, PAYMILL_API_HOST);
-            $clientObject = new Services_Paymill_Clients(PAYMILL_API_KEY, PAYMILL_API_HOST);
-            $paymentObject = new Services_Paymill_Payments(PAYMILL_API_KEY, PAYMILL_API_HOST);
+            $clientsObject = new Services_Paymill_Clients(PAYMILL_API_KEY, PAYMILL_API_HOST);
+            $paymentsObject = new Services_Paymill_Payments(PAYMILL_API_KEY, PAYMILL_API_HOST);
 
-            $clientParam = array(
+            $clientsParam = array(
                 'email' => 'Some Testemail',
                 'description' => 'This is a Testuser.'
             );
-            $client = $clientObject->create($clientParam);
+            $client = $clientsObject->create($clientsParam);
 
-            $paymentParam = array(
+            $paymentsParam = array(
                 'token' => $_POST['paymillToken'],
                 'client' => $client['id']
             );
-            $payment = $paymentObject->create($paymentParam);
+            $payment = $paymentsObject->create($paymentsParam);
 
-            $transactionparams = array(
+            $transactionsParam = array(
                 'payment' => $payment['id'],
                 'amount' => $_POST['amount'] * 100,
                 'currency' => $_POST['currency'],
                 'description' => 'Test Transaction'
             );
-            $transaction = $transactionsObject->create($transactionparams);
+            $transaction = $transactionsObject->create($transactionsParam);
         }
         ?>
     </head>

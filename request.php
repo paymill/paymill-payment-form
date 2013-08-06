@@ -3,8 +3,7 @@
     <head>
         <meta http-equiv="content-type"
               content="text/html; charset=utf-8"/>
-        <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <?php
+       <?php
         //
         // Please download the Paymill PHP Wrapper at
         // https://github.com/Paymill/Paymill-PHP
@@ -52,7 +51,7 @@
         ?>
     </head>
     <body>
-        <div class="container">
+        <div>
             <h1>We appreciate your purchase!</h1>
 
             <h4>Transaction:</h4>
@@ -60,6 +59,5 @@
                 <?php print_r($transaction); ?>
             </pre>
         </div>
-        <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
     </body>
 </html>

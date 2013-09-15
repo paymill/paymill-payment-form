@@ -80,17 +80,20 @@
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-number"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
+                                return false;
                             }
                             if (false == paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
+                                return false;
                             }
 
                             if ($('.card-holdername').val() == '') {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
+                                return false;
                             }
                             var params = {
                                 amount_int:     $('.amount').val() * 100,  // E.g. "15" for 0.15 Eur

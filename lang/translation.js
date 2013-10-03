@@ -1,4 +1,4 @@
-var translation = new Array();
+var translation = new Object();
 
 //German
 //Creditcard

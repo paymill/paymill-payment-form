@@ -4,6 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <script type="text/javascript">
             var PAYMILL_PUBLIC_KEY = 'YOUR_PUBLIC_API_KEY';
+            var VALIDATE_CVC = true;
         </script>
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.no-responsive.no-icons.min.css">
         <link rel="stylesheet" type = TEXT/CSS href="css/paymill_styles.css">
@@ -35,13 +36,21 @@
                     $(".amount-label").text(lang["form"]["amount"]);
                     $(".currency-label").text(lang["form"]["currency"]);
                     $(".submit-button").text(lang["form"]["submit-button"]);
+                    $("#tooltip").attr('title', lang["form"]["tooltip"]);
                 }
 
                 $('.card-number').keyup(function() {
                     var brand = paymill.cardType($('.card-number').val());
                     brand = brand.toLowerCase();
+                    $(".card-number")[0].className = $(".card-number")[0].className.replace(/paymill-card-number-.*/g, '');
                     if (brand !== 'unknown') {
                         $('#card-number').addClass("paymill-card-number-" + brand);
+                    }
+
+                    if (brand !== 'maestro') {
+                        VALIDATE_CVC = true;
+                    } else {
+                        VALIDATE_CVC = false;
                     }
                 });
 
@@ -69,24 +78,30 @@
                     paymenttype = $('.paymenttype.disabled').length ? $('.paymenttype.disabled').val() : 'cc';
                     switch (paymenttype) {
                         case "cc":
+                            $('.submit-button').attr("disabled", "disabled");
+                            if (false == paymill.validateHolder($('.card-holdername').val())) {
+                                $(".payment-errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
+                                $(".payment-errors").css("display","inline-block");
+                                $(".submit-button").removeAttr("disabled");
+                            }
+                            if ((false == paymill.validateCvc($('.card-cvc').val()))) {
+                                if(VALIDATE_CVC){
+                                    $(".payment-errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
+                                    $(".payment-errors").css("display","inline-block");
+                                    $(".submit-button").removeAttr("disabled");
+                                } else {
+                                    $('.card-cvc').val("000");
+                                }
+                            }
                             if (false == paymill.validateCardNumber($('.card-number').val())) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-number"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
-                                return false;
                             }
                             if (false == paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
-                                return false;
-                            }
-
-                            if ($('.card-holdername').val() == '') {
-                                $(".payment-errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
-                                $(".payment-errors").css("display","inline-block");
-                                $(".submit-button").removeAttr("disabled");
-                                return false;
                             }
                             var params = {
                                 amount_int:     $('.amount').val() * 100,  // E.g. "15" for 0.15 Eur
@@ -180,9 +195,10 @@
                             <label class="card-number-label"></label>
                             <input id ="card-number" class="card-number span3" type="text" size="40" value="4111111111111111"/>
                         </div>
-                        <div class="span2">
+                        <div class="span3">
                             <label class="card-cvc-label"></label>
                             <input class="card-cvc span1" type="text" size="4" value="111"/>
+                            <span id="tooltip" style="margin-left:3px; font-size:11px; color:#e2e2e2; padding:0 5px; border-radius:100px; background:#636363;" title="">?</span>
                         </div>
                     </div>
                     <div class="controls controls-row">

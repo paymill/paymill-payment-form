@@ -13,7 +13,7 @@ translation["de"]["form"]["amount"] = 'Betrag';
 translation["de"]["form"]["currency"] = 'Währung';
 translation["de"]["form"]["submit-button"] = 'Abschicken';
 //Elv
-translation["de"]["form"]["elv-paymentname"] = 'Elektronisches Lastschriftverfahren';
+translation["de"]["form"]["elv-paymentname"] = 'ELV';
 translation["de"]["form"]["elv-account"] = 'Kontonummer';
 translation["de"]["form"]["elv-holdername"] = 'Kontoinhaber';
 translation["de"]["form"]["elv-bankcode"] = 'Bankleitzahl';

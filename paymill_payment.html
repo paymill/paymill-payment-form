@@ -6,6 +6,7 @@
             var PAYMILL_PUBLIC_KEY = 'YOUR_PUBLIC_API_KEY';
         </script>
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.no-responsive.no-icons.min.css">
+        <link rel="stylesheet" type = TEXT/CSS href="css/paymill_styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://bridge.paymill.de/"></script>
         <script type="text/javascript" src="lang/translation.js"></script>
@@ -37,18 +38,10 @@
                 }
 
                 $('.card-number').keyup(function() {
-                    switch(paymill.cardType($('.card-number').val())){
-                        case 'Visa':
-                            $('.card-icon').html('<img src="image/icon_visa.png" >');
-                            $('.card-icon').show();
-                            break;
-                        case 'MasterCard':
-                            $('.card-icon').html('<img src="image/icon_mastercard.png" >');
-                            $('.card-icon').show();
-                            break;
-                        default:
-                            $('.card-icon').hide();
-                            break;
+                    var brand = paymill.cardType($('.card-number').val());
+                    brand = brand.toLowerCase();
+                    if (brand !== 'unknown') {
+                        $('#card-number').addClass("paymill-card-number-" + brand);
                     }
                 });
 
@@ -183,17 +176,14 @@
                 <p class="payment-errors alert-error span3" style="display:none;"></p>
                 <div id="payment-form-cc">
                     <div class="controls controls-row">
-                        <div class="span2">
+                        <div class="span3">
                             <label class="card-number-label"></label>
-                            <input class="card-number span2" type="text" size="20" value="4111111111111111"/>
+                            <input id ="card-number" class="card-number span3" type="text" size="40" value="4111111111111111"/>
                         </div>
-                        <div class="span1">
+                        <div class="span2">
                             <label class="card-cvc-label"></label>
                             <input class="card-cvc span1" type="text" size="4" value="111"/>
                         </div>
-                    </div>
-                    <div class="controls controls-row">
-                        <div class="span3 card-icon"></div>
                     </div>
                     <div class="controls controls-row">
                         <div class="span3">

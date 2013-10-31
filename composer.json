@@ -1,0 +1,5 @@
+{
+    "require": {
+        "paymill/paymill": "v3.0.0"
+    }
+}

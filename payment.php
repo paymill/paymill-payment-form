@@ -20,7 +20,7 @@
             $transaction = new \Paymill\Models\Request\Transaction();
 
             try{
-                $client->setEmail('testuser@payintelligent.de');//'Some Testemail');
+                $client->setEmail('Some Testemail');
                 $client->setDescription('This is a Testuser.');
                 $clientResponse = $service->create($client);
 

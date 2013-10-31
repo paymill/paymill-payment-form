@@ -4,13 +4,15 @@
         <meta http-equiv="content-type"
               content="text/html; charset=utf-8"/>
        <?php
-        //
-        // Please download the Paymill PHP Wrapper at
-        // https://github.com/Paymill/Paymill-PHP
-        // and put the containing "lib" folder into your project
-        //
+       //
+       // Please download the Paymill PHP Wrapper using composer.
+       // If you don't already use Composer,
+       // then you probably should read the installation guide http://getcomposer.org/download/.
+       //
 
+       //Change the following constants
        define('PAYMILL_API_KEY', 'YOUR_API_KEY');
+       define('CUSTOMER_EMAIL', 'SOME_TEST_EMAIL');
        require 'vendor/autoload.php';
 
         if (isset($_POST['paymillToken'])) {
@@ -20,7 +22,7 @@
             $transaction = new \Paymill\Models\Request\Transaction();
 
             try{
-                $client->setEmail('Some Testemail');
+                $client->setEmail(CUSTOMER_EMAIL);
                 $client->setDescription('This is a Testuser.');
                 $clientResponse = $service->create($client);
 

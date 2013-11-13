@@ -56,3 +56,7 @@
 #buttonWrapper {
     text-align: center;
     }
+
+.btn-primary.disabled{
+    background-color: #009926;
+    }

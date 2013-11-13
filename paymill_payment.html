@@ -13,8 +13,11 @@
         <script type="text/javascript" src="lang/translation.js"></script>
         <script type="text/javascript">
             $.noConflict();
+
             jQuery(document).ready(function ($) {
                 var formlang = 'de';
+                var doc = document;
+                var body = $( doc.body );
                 function translateForm(language){
                     formlang = language;
                     var lang;
@@ -54,6 +57,14 @@
                     }
                 });
 
+                $('.card-expiry').keyup(function() {
+                    if ( /^\d\d$/.test( $('.card-expiry').val() ) ) {
+                        text = $('.card-expiry').val();
+                        $('.card-expiry').val(text += "/");
+                    }
+                });
+
+
                 function PaymillResponseHandler(error, result) {
                     if (error) {
                         // Zeigt den Fehler überhalb des Formulars an
@@ -71,6 +82,7 @@
                     }
                     $(".submit-button").removeAttr("disabled");
                 }
+
                 $("#payment-form").submit(function (event) {
                     // Absenden Button deaktivieren um weitere Klicks zu vermeiden
                     $('.submit-button').attr("disabled", "disabled");
@@ -98,7 +110,9 @@
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                             }
-                            if (false == paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
+                            var expiry = $('.card-expiry').val();
+                            expiry = expiry.split("/");
+                            if (false == paymill.validateExpiry(expiry[0], expiry[1])) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
@@ -107,8 +121,8 @@
                                 amount_int:     $('.amount').val() * 100,  // E.g. "15" for 0.15 Eur
                                 currency:       $('.currency').val(),    // ISO 4217 e.g. "EUR"
                                 number:         $('.card-number').val(),
-                                exp_month:      $('.card-expiry-month').val(),
-                                exp_year:       $('.card-expiry-year').val(),
+                                exp_month:      expiry[0],
+                                exp_year:       expiry[1],
                                 cvc:            $('.card-cvc').val(),
                                 cardholder:     $('.card-holdername').val()
                             };
@@ -180,14 +194,14 @@
     <body>
         <div class="well span5">
             <div class="controls controls-row">
-                <div class="btn-group span4">
+                <div class="btn-group span3">
                     <button id="btn-paymenttype-cc"  class="paymenttype btn btn-primary disabled" value="cc">Credit card</button>
                     <button id="btn-paymenttype-elv" class="paymenttype btn" value="elv">ELV</button>
                 </div>
-                <img src="image/gb.png" id="language_switch" style="float: right;">
+                <img src="image/gb.png" id="language_switch">
                 <br /><br />
             </div>
-            <form id="payment-form" class="span4" action="payment.php" method="POST">
+            <form id="payment-form" action="payment.php" method="POST">
                 <p class="payment-errors alert-error span3" style="display:none;"></p>
                 <div id="payment-form-cc">
                     <div class="controls controls-row">
@@ -195,10 +209,9 @@
                             <label class="card-number-label"></label>
                             <input id ="card-number" class="card-number span3" type="text" size="40" value="4111111111111111"/>
                         </div>
-                        <div class="span3">
-                            <label class="card-cvc-label"></label>
+                        <div class="span1">
+                            <label><span class="card-cvc-label"></span><span id="tooltip" title="">?</span></label>
                             <input class="card-cvc span1" type="text" size="4" value="111"/>
-                            <span id="tooltip" style="margin-left:3px; font-size:11px; color:#e2e2e2; padding:0 5px; border-radius:100px; background:#636363;" title="">?</span>
                         </div>
                     </div>
                     <div class="controls controls-row">
@@ -206,15 +219,9 @@
                             <label class="card-holdername-label"></label>
                             <input class="card-holdername span3" type="text" size="20" value="lala"/>
                         </div>
-                    </div>
-                    <div class="controls controls-row">
-                        <div class="span3">
+                        <div class="span1">
                             <label class="card-expiry-label"></label>
-                            <input class="card-expiry-month span1" type="text" size="2" value="12"/>
-
-                            <span style="float:left;"> / </span>
-
-                            <input class="card-expiry-year span1" type="text" size="4" value="2015"/>
+                            <input class="card-expiry span1" type="text" size="5" placeholder="MM/YY"/>
                         </div>
                     </div>
                 </div>
@@ -246,10 +253,8 @@
                             <input class="currency span1" type="text" size="3" value="EUR" name="currency"/>
                         </div>
                     </div>
-                    <div class="controls controls-row">
-                        <div class="span4">
-                            <button class="submit-button btn btn-primary" type="submit"></button>
-                        </div>
+                    <div id="buttonWrapper">
+                        <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit"></button>
                     </div>
             </form>
         </div>

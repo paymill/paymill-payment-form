@@ -210,8 +210,8 @@
                             <input id ="card-number" class="card-number span3" type="text" size="40" value="4111111111111111"/>
                         </div>
                         <div class="span1">
-                            <label><span class="card-cvc-label"></span><span id="tooltip" title="">?</span></label>
-                            <input class="card-cvc span1" type="text" size="4" value="111"/>
+                            <label class="card-expiry-label"></label>
+                            <input class="card-expiry span1" type="text" size="5" placeholder="MM/YY" value="01/2015"/>
                         </div>
                     </div>
                     <div class="controls controls-row">
@@ -220,34 +220,32 @@
                             <input class="card-holdername span3" type="text" size="20" value="lala"/>
                         </div>
                         <div class="span1">
-                            <label class="card-expiry-label"></label>
-                            <input class="card-expiry span1" type="text" size="5" placeholder="MM/YY"/>
+                            <label><span class="card-cvc-label"></span><span id="tooltip" title="">?</span></label>
+                            <input class="card-cvc span1" type="text" size="4" value="111"/>
                         </div>
                     </div>
                 </div>
                 <div id="payment-form-elv" style="display: none;">
                     <div class="controls controls-row">
-                        <div class="span3">
-                            <label class="elv-holdername-label"></label>
-                            <input class="elv-holdername span3" type="text" size="20" value="Max Mustermann"/>
-                        </div>
-                    </div>
-                    <div class="controls controls-row">
-                        <div class="span3">
+                        <div class="span2">
                             <label class="elv-account-label"></label>
-                            <input class="elv-account span3" type="text" size="20" value="1234567890"/>
+                            <input class="elv-account span2" type="text" size="20" value="1234567890"/>
+                        </div>
+                        <div class="span2">
+                            <label class="elv-bankcode-label"></label>
+                            <input class="elv-bankcode span2" type="text" size="20" value="99999999"/>
                         </div>
                     </div>
                     <div class="controls controls-row">
-                        <div class="span3">
-                            <label class="elv-bankcode-label"></label>
-                            <input class="elv-bankcode span3" type="text" size="20" value="99999999"/>
+                        <div class="span4">
+                            <label class="elv-holdername-label"></label>
+                            <input class="elv-holdername span4" type="text" size="20" value="Max Mustermann"/>
                         </div>
                     </div>
                 </div>
                 <div class="controls controls-row">
-                        <div class="span2"><label class="amount-label"></label>
-                            <input class="amount span2" type="text" size="5" value="10.00" name="amount"/>
+                        <div class="span3"><label class="amount-label"></label>
+                            <input class="amount span3" type="text" size="5" value="10.00" name="amount"/>
                         </div>
                         <div class="span1"><label class="currency-label"></label>
                             <input class="currency span1" type="text" size="3" value="EUR" name="currency"/>

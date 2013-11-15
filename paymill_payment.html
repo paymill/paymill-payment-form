@@ -86,7 +86,8 @@
                     // Absenden Button deaktivieren um weitere Klicks zu vermeiden
                     $('.submit-button').attr("disabled", "disabled");
 
-                    paymenttype = $('.paymenttype.disabled').length ? $('.paymenttype.disabled').val() : 'cc';
+                    paymenttype = $('.switch_button_active').length ? $('.switch_button_active').val() : 'cc';
+                    console.log(paymenttype);
                     switch (paymenttype) {
                         case "cc":
                             $('.submit-button').attr("disabled", "disabled");
@@ -135,20 +136,21 @@
                             break;
 
                         case "elv":
+                            $('.submit-button').attr("disabled", "disabled");
                             if (false == $('.elv-holdername').val()) {
-                                $(".payment_errors").text(translation["error"]["invalid-elv-holdername"]);
+                                $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-holdername"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
                             if (false == paymill.validateAccountNumber($('.elv-account').val())) {
-                                $(".payment_errors").text(translation["error"]["invalid-elv-accountnumber"]);
+                                $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-accountnumber"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
                             if (false == paymill.validateBankCode($('.elv-bankcode').val())) {
-                                $(".payment_errors").text(translation["error"]["invalid-elv-bankcode"]);
+                                $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bankcode"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;

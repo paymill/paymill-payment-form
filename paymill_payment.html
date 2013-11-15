@@ -94,12 +94,14 @@
                                 $(".payment_errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
+                                return false;
                             }
                             if ((false == paymill.validateCvc($('.card-cvc').val()))) {
                                 if(VALIDATE_CVC){
                                     $(".payment_errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
                                     $(".payment_errors").css("display","inline-block");
                                     $(".submit-button").removeAttr("disabled");
+                                    return false;
                                 } else {
                                     $('.card-cvc').val("000");
                                 }
@@ -108,6 +110,7 @@
                                 $(".payment_errors").text(translation[formlang]["error"]["invalid-card-number"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
+                                return false;
                             }
                             var expiry = $('.card-expiry').val();
                             expiry = expiry.split("/");
@@ -118,6 +121,7 @@
                                 $(".payment_errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
+                                return false;
                             }
                             var params = {
                                 amount_int:     $('.amount').val() * 100,  // E.g. "15" for 0.15 Eur

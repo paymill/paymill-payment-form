@@ -204,11 +204,11 @@
             </div>
             <form id="payment-form" action="payment.php" method="POST">
                 <header>
-                    <img alt="Logo" src="https://button.chipmunk.dev/paymill-logo-signet.png">
+                    <img alt="Logo" src="image/paymill-logo-signet.png">
                     <h1 class="form-signin-heading">Title stands here</h1>
                     <h2 class="form-signin-heading">Description 1-year free</h2>
                 </header>
-                <div class="error-message">&nbsp;</div>
+                <div class="payment_errors">&nbsp;</div>
                 <div id="payment-form-cc">
                     <fieldset>
                             <label class="card-number-label field-left"></label>
@@ -236,14 +236,12 @@
                         <input class="elv-holdername field-full" type="text">
                     </fieldset>
                 </div>
-                <!--
-                    <fieldset class="controls controls-row">
-                        <label class="amount-label"></label>
-                        <input class="amount" type="text" value="10.00" name="amount">
-                        <label class="currency-label"></label>
-                        <input class="currency" type="text" value="EUR" name="currency">
-                    </fieldset>
-                -->
+                <fieldset>
+                    <label class="amount-label field-left"></label>
+                    <input class="amount field-left" type="text" value="10.00" name="amount">
+                    <label class="currency-label field-right"></label>
+                    <input class="currency field-right" type="text" value="EUR" name="currency">
+                </fieldset>
                 <fieldset id="buttonWrapper">
                     <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit"></button>
                 </fieldset>

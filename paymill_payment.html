@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8">
         <script type="text/javascript">
             var PAYMILL_PUBLIC_KEY = 'YOUR_PUBLIC_API_KEY';
             var VALIDATE_CVC = true;
         </script>
-        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.no-responsive.no-icons.min.css">
-        <link rel="stylesheet" type = TEXT/CSS href="css/paymill_styles.css">
+        <link rel="stylesheet" type ="text/css" href="css/paymill_styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://bridge.paymill.de/"></script>
         <script type="text/javascript" src="lang/translation.js"></script>
@@ -154,35 +153,40 @@
                             };
                             break;
                     }
+
                     paymill.createToken(params, PaymillResponseHandler);
                     return false;
                 });
+
                 $("#language_switch").click(function(){
                     var language = formlang;
                     var newimg;
+
                     if(formlang == 'en'){
                         newimg = "image/gb.png";
                         language = "de";
-                    }else{
+                    } else {
                         newimg = "image/de.png";
                         language = "en";
                     }
+
                     $(this).attr("src", newimg);
                     translateForm(language);
                 });
+
                 // Toggle buttons and forms
-                $(".paymenttype").click(function (event) {
-                    if($(this).hasClass('btn-primary disabled')){
+                $(".switch_button").click(function (event) {
+                    if ($(this).hasClass('switch_button_active')){
                         return false;
                     }
-                    if($(this).val()=='cc') {
-                        $('#btn-paymenttype-elv').removeClass('btn-primary disabled');
-                        $('#btn-paymenttype-cc').addClass('btn-primary disabled');
+                    if ($(this).val()=='cc') {
+                        $('#btn-paymenttype-elv').removeClass('switch_button_active');
+                        $('#btn-paymenttype-cc').addClass('switch_button_active');
                         $('#payment-form-cc').toggle();
                         $('#payment-form-elv').toggle();
                     } else {
-                        $('#btn-paymenttype-cc').removeClass('btn-primary disabled');
-                        $('#btn-paymenttype-elv').addClass('btn-primary disabled');
+                        $('#btn-paymenttype-cc').removeClass('switch_button_active');
+                        $('#btn-paymenttype-elv').addClass('switch_button_active');
                         $('#payment-form-cc').toggle();
                         $('#payment-form-elv').toggle();
                     }
@@ -192,68 +196,57 @@
         </script>
     </head>
     <body>
-        <div class="well span5">
-            <div class="controls controls-row">
-                <div class="btn-group span3">
-                    <button id="btn-paymenttype-cc"  class="paymenttype btn btn-primary disabled" value="cc">Credit card</button>
-                    <button id="btn-paymenttype-elv" class="paymenttype btn" value="elv">ELV</button>
-                </div>
+        <div id="paymill_example_form">
+            <div id="top_switch">
+                <button id="btn-paymenttype-cc" class="switch_button switch_button_active" value="cc">Credit card</button>
+                <button id="btn-paymenttype-elv" class="switch_button" value="elv">ELV</button>
                 <img src="image/gb.png" id="language_switch">
-                <br /><br />
             </div>
             <form id="payment-form" action="payment.php" method="POST">
-                <p class="payment-errors alert-error span3" style="display:none;"></p>
+                <header>
+                    <img alt="Logo" src="https://button.chipmunk.dev/paymill-logo-signet.png">
+                    <h1 class="form-signin-heading">Title stands here</h1>
+                    <h2 class="form-signin-heading">Description 1-year free</h2>
+                </header>
+                <div class="error-message">&nbsp;</div>
                 <div id="payment-form-cc">
-                    <div class="controls controls-row">
-                        <div class="span3">
-                            <label class="card-number-label"></label>
-                            <input id ="card-number" class="card-number span3" type="text" size="40" value="4111111111111111"/>
-                        </div>
-                        <div class="span1">
-                            <label class="card-expiry-label"></label>
-                            <input class="card-expiry span1" type="text" size="5" placeholder="MM/YY" value="01/2015"/>
-                        </div>
-                    </div>
-                    <div class="controls controls-row">
-                        <div class="span3">
-                            <label class="card-holdername-label"></label>
-                            <input class="card-holdername span3" type="text" size="20" value="lala"/>
-                        </div>
-                        <div class="span1">
-                            <label><span class="card-cvc-label"></span><span id="tooltip" title="">?</span></label>
-                            <input class="card-cvc span1" type="text" size="4" value="111"/>
-                        </div>
-                    </div>
+                    <fieldset>
+                            <label class="card-number-label field-left"></label>
+                            <input id ="card-number" class="card-number field-left" type="text" placeholder="**** **** **** ****" maxlength="19">
+                            <label class="card-expiry-label field-right"></label>
+                            <input class="card-expiry field-right" type="text" placeholder="MM/YY" maxlength="7">
+                    </fieldset>
+                    <fieldset>
+                            <label class="card-holdername-label field-left"></label>
+                            <input class="card-holdername field-left" type="text">
+                            <label class="field-right"><span class="card-cvc-label"></span><span id="tooltip" title="">?</span></label>
+                            <input class="card-cvc field-right" type="text" placeholder="CVC" maxlength="4">
+                    </fieldset>
                 </div>
+
                 <div id="payment-form-elv" style="display: none;">
-                    <div class="controls controls-row">
-                        <div class="span2">
-                            <label class="elv-account-label"></label>
-                            <input class="elv-account span2" type="text" size="20" value="1234567890"/>
-                        </div>
-                        <div class="span2">
-                            <label class="elv-bankcode-label"></label>
-                            <input class="elv-bankcode span2" type="text" size="20" value="99999999"/>
-                        </div>
-                    </div>
-                    <div class="controls controls-row">
-                        <div class="span4">
-                            <label class="elv-holdername-label"></label>
-                            <input class="elv-holdername span4" type="text" size="20" value="Max Mustermann"/>
-                        </div>
-                    </div>
+                    <fieldset>
+                        <label class="elv-account-label field-left"></label>
+                        <input class="elv-account field-left" type="text">
+                        <label class="elv-bankcode-label field-right"></label>
+                        <input class="elv-bankcode field-right" type="text">
+                    </fieldset>
+                    <fieldset>
+                        <label class="elv-holdername-label field-full"></label>
+                        <input class="elv-holdername field-full" type="text">
+                    </fieldset>
                 </div>
-                <div class="controls controls-row">
-                        <div class="span3"><label class="amount-label"></label>
-                            <input class="amount span3" type="text" size="5" value="10.00" name="amount"/>
-                        </div>
-                        <div class="span1"><label class="currency-label"></label>
-                            <input class="currency span1" type="text" size="3" value="EUR" name="currency"/>
-                        </div>
-                    </div>
-                    <div id="buttonWrapper">
-                        <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit"></button>
-                    </div>
+                <!--
+                    <fieldset class="controls controls-row">
+                        <label class="amount-label"></label>
+                        <input class="amount" type="text" value="10.00" name="amount">
+                        <label class="currency-label"></label>
+                        <input class="currency" type="text" value="EUR" name="currency">
+                    </fieldset>
+                -->
+                <fieldset id="buttonWrapper">
+                    <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit"></button>
+                </fieldset>
             </form>
         </div>
     </body>

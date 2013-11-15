@@ -1,34 +1,155 @@
-.paymill-card-number-visa {
-    background: white url('../image/32x20_visa.png')no-repeat center right !important;
-    }
+/** Reset **/
 
-.paymill-card-number-mastercard {
-    background: white  url('../image/32x20_mastercard.png')no-repeat center right !important;
-    }
+#paymill_example_form {
+    font-family: 'Source Sans Pro', Arial, sans-serif;
+    position: relative;
+}
 
-.paymill-card-number-amex {
-    background: white  url('../image/32x20_amex.png')no-repeat center right !important;
-    }
+#top_switch {
+    margin-bottom: 15px;
+    width: 380px;
+}
 
-.paymill-card-number-jcb {
-    background: white  url('../image/32x20_jcb.png')no-repeat center right !important;
-    }
+.switch_button {
+    font-size: 11px;
+    font-weight: bold;
+    background: #F05000;
+    box-shadow: 0 -2px 0 #BE4000 inset;
+    border: none;
+    border-color: #BE4000;
+    color: #fff;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+}
 
-.paymill-card-number-maestro {
-    background: white  url('../image/32x20_maestro.png')no-repeat center right !important;
-    }
+.switch_button:hover, .switch_button:focus {
+    box-shadow: none;
+    background: #00cc33;
+}
 
-.paymill-card-number-carte-bleue {
-    background: white  url('../image/32x20_unionpay.png')no-repeat center right !important;
-    }
+.switch_button_active {
+    background: #00b22d;
+    border-color: #00b22d;
+    box-shadow: none;
+}
 
-.paymill-card-number-diners {
-    background: white  url('../image/32x20_dinersclub.png')no-repeat center right !important;
-    }
+#btn-paymenttype-cc {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
 
-.paymill-card-number-discover {
-    background: white  url('../image/32x20_discover.png') no-repeat center right !important;
-    }
+#btn-paymenttype-elv {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left: 1px solid #BE4000;
+    margin-left: -4px;
+}
+
+#btn-paymenttype-elv:hover, #btn-paymenttype-elv:hover {
+    border: 1px solid #00b22d;
+}
+
+#language_switch {
+    float: right;
+    margin-top: 5px;
+}
+
+form {
+    color: #424A4D;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #BDC5C8;
+    border-radius: 4px;
+    box-shadow: 0 0 3px #BDC5C8;
+    color: #424A4D;
+    height: 450px;
+    width: 380px;
+}
+
+header {
+    display: block;
+    height: 125px;
+    padding: 50px 20px 0;
+    position: relative;
+}
+
+header img {
+    left: 20px;
+    position: absolute;
+    top: 50px;
+}
+
+h1, h2 {
+    font-weight: normal;
+    margin: 0 0 0 138px;
+}
+
+h1 {
+    font-size: 24px;
+    line-height: 28px;
+}
+
+h2 {
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 30px;
+}
+
+.error-message {
+    color: #FF0000;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    padding-left: 40px;
+}
+
+fieldset {
+    border: medium none;
+    height: 70px;
+    padding: 0 40px;
+    position: relative;
+}
+
+input {
+    background: none repeat scroll 0 0 #EAEFF1;
+    border: 1px solid #BDC5C8;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px #DDE2E4 inset;
+    color: #6D7578;
+    font-family: inherit;
+    font-size: 15px;
+    height: 24px;
+    padding: 7px;
+    position: absolute;
+    top: 20px;
+    transition: all 0.3s ease 0s;
+}
+
+input:focus {
+    border-color: #6d7578;
+    outline: none;
+    color: #424a4d;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+    position: absolute;
+}
+
+.field-left {
+    width: 164px;
+}
+
+.field-right {
+    width: 84px;
+    left: 240px;
+}
+
+.field-full {
+    width: 284px;
+}
 
 #tooltip {
     margin-left:   3px;
@@ -36,7 +157,7 @@
     padding:       0 5px;
     border-radius: 100px;
     background:    #636363;
-    }
+}
 
 #paymill-submit-button {
     font-size: 18px;
@@ -50,35 +171,55 @@
     cursor: pointer;
     width: 220px;
     height: 42px;
-    }
+}
 
 #paymill-submit-button:hover, #paymill-submit-button:focus {
     box-shadow: none;
     background: #00cc33;
-    }
+}
 
 #paymill-submit-button:active {
     background: #00b22d;
     box-shadow: inset 2px #009926;
-    }
+}
 
 #buttonWrapper {
     text-align: center;
-    }
+}
 
 .btn-primary.disabled{
     background-color: #009926;
+}
+
+/** CC-Icons **/
+.paymill-card-number-visa {
+    background: #EAEFF1 url('../image/32x20_visa.png')no-repeat center right !important;
+}
+
+.paymill-card-number-mastercard {
+    background: #EAEFF1  url('../image/32x20_mastercard.png')no-repeat center right !important;
+}
+
+.paymill-card-number-amex {
+    background: #EAEFF1  url('../image/32x20_amex.png')no-repeat center right !important;
+}
+
+.paymill-card-number-jcb {
+    background: #EAEFF1  url('../image/32x20_jcb.png')no-repeat center right !important;
+}
+
+.paymill-card-number-maestro {
+    background: #EAEFF1  url('../image/32x20_maestro.png')no-repeat center right !important;
+}
+
+.paymill-card-number-carte-bleue {
+    background: #EAEFF1  url('../image/32x20_unionpay.png')no-repeat center right !important;
     }
 
-input.span1, div.span1{
-    width: 60px
-    }
-input.span2, div.span2{
-    width: 110px;
-    }
-input.span3, div.span3{
-    width: 160px;
-    }
-input.span4, div.span4 {
-    width: 240px;
-    }
+.paymill-card-number-diners {
+    background: #EAEFF1  url('../image/32x20_dinersclub.png')no-repeat center right !important;
+}
+
+.paymill-card-number-discover {
+    background: #EAEFF1  url('../image/32x20_discover.png') no-repeat center right !important;
+}

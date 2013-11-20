@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <script type="text/javascript">
             var PAYMILL_PUBLIC_KEY = 'YOUR_PUBLIC_API_KEY';
             var VALIDATE_CVC = true;
         </script>
-        <link rel="stylesheet" type ="text/css" href="css/paymill_styles.css">
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.no-responsive.no-icons.min.css">
+        <link rel="stylesheet" type = TEXT/CSS href="css/paymill_styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://bridge.paymill.de/"></script>
         <script type="text/javascript" src="lang/translation.js"></script>
         <script type="text/javascript">
             $.noConflict();
-
             jQuery(document).ready(function ($) {
                 var formlang = 'de';
-                var doc = document;
-                var body = $( doc.body );
                 function translateForm(language){
                     formlang = language;
                     var lang;
@@ -37,6 +35,8 @@
                     $(".elv-bankcode-label").text(lang["form"]["elv-bankcode"]);
                     $(".amount-label").text(lang["form"]["amount"]);
                     $(".currency-label").text(lang["form"]["currency"]);
+                    $(".interval-label").text(lang["form"]["interval"]);
+                    $(".offer-name-label").text(lang["form"]["offer-name"]);
                     $(".submit-button").text(lang["form"]["submit-button"]);
                     $("#tooltip").attr('title', lang["form"]["tooltip"]);
                 }
@@ -56,22 +56,14 @@
                     }
                 });
 
-                $('.card-expiry').keyup(function() {
-                    if ( /^\d\d$/.test( $('.card-expiry').val() ) ) {
-                        text = $('.card-expiry').val();
-                        $('.card-expiry').val(text += "/");
-                    }
-                });
-
-
                 function PaymillResponseHandler(error, result) {
                     if (error) {
                         // Zeigt den Fehler überhalb des Formulars an
-                        $(".payment_errors").text(error.apierror);
-                        $(".payment_errors").css("display","inline-block");
+                        $(".payment-errors").text(error.apierror);
+                        $(".payment-errors").css("display","inline-block");
                     } else {
-                        $(".payment_errors").css("display","none");
-                        $(".payment_errors").text("");
+                        $(".payment-errors").css("display","none");
+                        $(".payment-errors").text("");
                         var form = $("#payment-form");
                         // Token
                         var token = result.token;
@@ -81,77 +73,65 @@
                     }
                     $(".submit-button").removeAttr("disabled");
                 }
-
                 $("#payment-form").submit(function (event) {
                     // Absenden Button deaktivieren um weitere Klicks zu vermeiden
                     $('.submit-button').attr("disabled", "disabled");
 
-                    paymenttype = $('.switch_button_active').length ? $('.switch_button_active').val() : 'cc';
-                    console.log(paymenttype);
+                    paymenttype = $('.paymenttype.disabled').length ? $('.paymenttype.disabled').val() : 'cc';
                     switch (paymenttype) {
                         case "cc":
                             $('.submit-button').attr("disabled", "disabled");
                             if (false == paymill.validateHolder($('.card-holdername').val())) {
-                                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
-                                $(".payment_errors").css("display","inline-block");
+                                $(".payment-errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
+                                $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
-                                return false;
                             }
                             if ((false == paymill.validateCvc($('.card-cvc').val()))) {
                                 if(VALIDATE_CVC){
-                                    $(".payment_errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
-                                    $(".payment_errors").css("display","inline-block");
+                                    $(".payment-errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
+                                    $(".payment-errors").css("display","inline-block");
                                     $(".submit-button").removeAttr("disabled");
-                                    return false;
                                 } else {
                                     $('.card-cvc').val("000");
                                 }
                             }
                             if (false == paymill.validateCardNumber($('.card-number').val())) {
-                                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-number"]);
-                                $(".payment_errors").css("display","inline-block");
+                                $(".payment-errors").text(translation[formlang]["error"]["invalid-card-number"]);
+                                $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
-                                return false;
                             }
-                            var expiry = $('.card-expiry').val();
-                            expiry = expiry.split("/");
-                            if(expiry[1] && (expiry[1].length <= 2)){
-                                expiry[1] = '20'+expiry[1];
-                            }
-                            if (false == paymill.validateExpiry(expiry[0], expiry[1])) {
-                                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
-                                $(".payment_errors").css("display","inline-block");
+                            if (false == paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
+                                $(".payment-errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
+                                $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
-                                return false;
                             }
                             var params = {
                                 amount_int:     $('.amount').val() * 100,  // E.g. "15" for 0.15 Eur
                                 currency:       $('.currency').val(),    // ISO 4217 e.g. "EUR"
                                 number:         $('.card-number').val(),
-                                exp_month:      expiry[0],
-                                exp_year:       expiry[1],
+                                exp_month:      $('.card-expiry-month').val(),
+                                exp_year:       $('.card-expiry-year').val(),
                                 cvc:            $('.card-cvc').val(),
                                 cardholder:     $('.card-holdername').val()
                             };
                             break;
 
                         case "elv":
-                            $('.submit-button').attr("disabled", "disabled");
                             if (false == $('.elv-holdername').val()) {
-                                $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-holdername"]);
-                                $(".payment_errors").css("display","inline-block");
+                                $(".payment-errors").text(translation["error"]["invalid-elv-holdername"]);
+                                $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
                             if (false == paymill.validateAccountNumber($('.elv-account').val())) {
-                                $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-accountnumber"]);
-                                $(".payment_errors").css("display","inline-block");
+                                $(".payment-errors").text(translation["error"]["invalid-elv-accountnumber"]);
+                                $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
                             if (false == paymill.validateBankCode($('.elv-bankcode').val())) {
-                                $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bankcode"]);
-                                $(".payment_errors").css("display","inline-block");
+                                $(".payment-errors").text(translation["error"]["invalid-elv-bankcode"]);
+                                $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
@@ -162,40 +142,35 @@
                             };
                             break;
                     }
-
                     paymill.createToken(params, PaymillResponseHandler);
                     return false;
                 });
-
                 $("#language_switch").click(function(){
                     var language = formlang;
                     var newimg;
-
                     if(formlang == 'en'){
                         newimg = "image/gb.png";
                         language = "de";
-                    } else {
+                    }else{
                         newimg = "image/de.png";
                         language = "en";
                     }
-
                     $(this).attr("src", newimg);
                     translateForm(language);
                 });
-
                 // Toggle buttons and forms
-                $(".switch_button").click(function (event) {
-                    if ($(this).hasClass('switch_button_active')){
+                $(".paymenttype").click(function (event) {
+                    if($(this).hasClass('btn-primary disabled')){
                         return false;
                     }
-                    if ($(this).val()=='cc') {
-                        $('#btn-paymenttype-elv').removeClass('switch_button_active');
-                        $('#btn-paymenttype-cc').addClass('switch_button_active');
+                    if($(this).val()=='cc') {
+                        $('#btn-paymenttype-elv').removeClass('btn-primary disabled');
+                        $('#btn-paymenttype-cc').addClass('btn-primary disabled');
                         $('#payment-form-cc').toggle();
                         $('#payment-form-elv').toggle();
                     } else {
-                        $('#btn-paymenttype-cc').removeClass('switch_button_active');
-                        $('#btn-paymenttype-elv').addClass('switch_button_active');
+                        $('#btn-paymenttype-cc').removeClass('btn-primary disabled');
+                        $('#btn-paymenttype-elv').addClass('btn-primary disabled');
                         $('#payment-form-cc').toggle();
                         $('#payment-form-elv').toggle();
                     }
@@ -205,55 +180,87 @@
         </script>
     </head>
     <body>
-        <div id="paymill_example_form">
-            <div id="top_switch">
-                <button id="btn-paymenttype-cc" class="switch_button switch_button_active" value="cc">Credit card</button>
-                <button id="btn-paymenttype-elv" class="switch_button" value="elv">ELV</button>
-                <img src="image/gb.png" id="language_switch">
+        <div class="well span5">
+            <div class="controls controls-row">
+                <div class="btn-group span4">
+                    <button id="btn-paymenttype-cc"  class="paymenttype btn btn-primary disabled" value="cc">Credit card</button>
+                    <button id="btn-paymenttype-elv" class="paymenttype btn" value="elv">ELV</button>
+                </div>
+                <img src="image/gb.png" id="language_switch" style="float: right;">
+                <br /><br />
             </div>
-            <form id="payment-form" action="payment.php" method="POST">
-                <header>
-                    <img alt="Logo" src="image/paymill-logo-signet.png">
-                    <h1 class="form-signin-heading">Title stands here</h1>
-                    <h2 class="form-signin-heading">Description 1-year free</h2>
-                </header>
-                <div class="payment_errors">&nbsp;</div>
+            <form id="payment-form" class="span4" action="subscription.php" method="POST">
+                <p class="payment-errors alert-error span3" style="display:none;"></p>
                 <div id="payment-form-cc">
-                    <fieldset>
-                            <label for="card-number" class="card-number-label field-left"></label>
-                            <input id ="card-number" class="card-number field-left" type="text" placeholder="**** **** **** ****" maxlength="19">
-                            <label for="card-expiry" class="card-expiry-label field-right"></label>
-                            <input id="card-expiry" class="card-expiry field-right" type="text" placeholder="MM/YY" maxlength="7">
-                    </fieldset>
-                    <fieldset>
-                            <label for="card-holdername" class="card-holdername-label field-left"></label>
-                            <input id="card-holdername" class="card-holdername field-left" type="text">
-                            <label for="card-cvc" class="field-right"><span class="card-cvc-label"></span><span id="tooltip" title="">?</span></label>
-                            <input id="card-cvc" class="card-cvc field-right" type="text" placeholder="CVC" maxlength="4">
-                    </fieldset>
-                </div>
+                    <div class="controls controls-row">
+                        <div class="span3">
+                            <label class="card-number-label"></label>
+                            <input id ="card-number" class="card-number span3" type="text" size="40" value="4111111111111111"/>
+                        </div>
+                        <div class="span3">
+                            <label class="card-cvc-label"></label>
+                            <input class="card-cvc span1" type="text" size="4" value="111"/>
+                            <span id="tooltip" style="margin-left:3px; font-size:11px; color:#e2e2e2; padding:0 5px; border-radius:100px; background:#636363;" title="">?</span>
+                        </div>
+                    </div>
+                    <div class="controls controls-row">
+                        <div class="span3">
+                            <label class="card-holdername-label"></label>
+                            <input class="card-holdername span3" type="text" size="20" value="lala"/>
+                        </div>
+                    </div>
+                    <div class="controls controls-row">
+                        <div class="span3">
+                            <label class="card-expiry-label"></label>
+                            <input class="card-expiry-month span1" type="text" size="2" value="12"/>
 
-                <div id="payment-form-elv" style="display: none;">
-                    <fieldset>
-                        <label for="elv-account" class="elv-account-label field-left"></label>
-                        <input id="elv-account" class="elv-account field-left" type="text">
-                        <label for="elv-bankcode" class="elv-bankcode-label field-right"></label>
-                        <input id="elv-bankcode" class="elv-bankcode field-right" type="text">
-                    </fieldset>
-                    <fieldset>
-                        <label for="elv-holdername" class="elv-holdername-label field-full"></label>
-                        <input id="elv-holdername" class="elv-holdername field-full" type="text">
-                    </fieldset>
+                            <span style="float:left;"> / </span>
+
+                            <input class="card-expiry-year span1" type="text" size="4" value="2015"/>
+                        </div>
+                    </div>
                 </div>
-                <fieldset>
-                    <label for="amount" class="amount-label field-left"></label>
-                    <input id="amount" class="amount field-left" type="text" value="10.00" name="amount">
-                    <label for="currency" class="currency-label field-right"></label>
-                    <input id="currency" class="currency field-right" type="text" value="EUR" name="currency">
-                </fieldset>
-                <fieldset id="buttonWrapper">
-                    <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit"></button>
-                </fieldset>
+                <div id="payment-form-elv" style="display: none;">
+                    <div class="controls controls-row">
+                        <div class="span3">
+                            <label class="elv-holdername-label"></label>
+                            <input class="elv-holdername span3" type="text" size="20" value="Max Mustermann"/>
+                        </div>
+                    </div>
+                    <div class="controls controls-row">
+                        <div class="span3">
+                            <label class="elv-account-label"></label>
+                            <input class="elv-account span3" type="text" size="20" value="1234567890"/>
+                        </div>
+                    </div>
+                    <div class="controls controls-row">
+                        <div class="span3">
+                            <label class="elv-bankcode-label"></label>
+                            <input class="elv-bankcode span3" type="text" size="20" value="99999999"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls controls-row">
+                        <div class="span2"><label class="amount-label"></label>
+                            <input class="amount span2" type="text" size="5" value="10.00" name="amount"/>
+                        </div>
+                        <div class="span1"><label class="currency-label"></label>
+                            <input class="currency span1" type="text" size="3" value="EUR" name="currency"/>
+                        </div>
+                </div>
+                <div class="controls controls-row">
+                        <div class="span2"><label class="interval-label"></label>
+                            <input class="interval span2" type="text" size="5" value="1 MONTH" name="interval"/>
+                        </div>
+                        <div class="span3"><label class="offer-name-label"></label>
+                            <input class="offer-name span3" type="text" name="offer-name"/>
+                        </div>
+                </div>
+                <div class="controls controls-row">
+                    <div class="span4">
+                        <button class="submit-button btn btn-primary" type="submit"></button>
+                    </div>
+                </div>
             </form>
         </div>
     </body>

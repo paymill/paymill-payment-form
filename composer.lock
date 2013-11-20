@@ -1,0 +1,63 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "f981e2a14fba99e5ced72f7883e6eee1",
+    "packages": [
+        {
+            "name": "paymill/paymill",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paymill/paymill-php.git",
+                "reference": "3a3491b859b589945a51debf415e1a1df3543609"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paymill/paymill-php/zipball/3a3491b859b589945a51debf415e1a1df3543609",
+                "reference": "3a3491b859b589945a51debf415e1a1df3543609",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Paymill": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paymill GmbH",
+                    "homepage": "https://www.paymill.de"
+                }
+            ],
+            "description": "Paymill PHPLib",
+            "homepage": "https://www.paymill.de",
+            "keywords": [
+                "payment",
+                "provider"
+            ],
+            "time": "2013-10-15 10:14:35"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

@@ -2,8 +2,12 @@ paymill-payment-form
 ====================
 Example html form for Paymill payments.
 
+##Setup
+Use composer to include the paymill lib.
+Since the composer files are already in the project, all you have to do is to call composer -install
 
-Try now: 
+
+##Try now: 
 
 [Simple forms for "Credit Card", "Credit Card 3D secure" and "Direct debit"][1]
 

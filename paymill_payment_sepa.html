@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript">
+            var PAYMILL_PUBLIC_KEY = 'YOUR_PUBLIC_API_KEY';
+        </script>
+        <link rel="stylesheet" type ="text/css" href="css/paymill_styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://bridge.paymill.de/"></script>
+        <script type="text/javascript" src="lang/translation.js"></script>
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery(document).ready(function($) {
+                var formlang = 'de';
+                var doc = document;
+                var body = $(doc.body);
+                function translateForm(language) {
+                    formlang = language;
+                    var lang;
+                    if (translation[language] === undefined) {
+                        lang = translation['en'];
+                    } else {
+                        lang = translation[language];
+                    }
+
+                    $("#btn-paymenttype-elv").text(lang["form"]["elv-paymentname"]);
+                    $(".elv-iban-label").text(lang["form"]["elv-iban"]);
+                    $(".elv-holdername-label").text(lang["form"]["elv-holdername"]);
+                    $(".elv-bic-label").text(lang["form"]["elv-bic"]);
+                    $(".amount-label").text(lang["form"]["amount"]);
+                    $(".currency-label").text(lang["form"]["currency"]);
+                    $(".submit-button").text(lang["form"]["submit-button"]);
+                }
+
+                function PaymillResponseHandler(error, result) {
+                    if (error) {
+                        // Zeigt den Fehler überhalb des Formulars an
+                        $(".payment_errors").text(error.apierror);
+                        $(".payment_errors").css("display", "inline-block");
+                    } else {
+                        $(".payment_errors").css("display", "none");
+                        $(".payment_errors").text("");
+                        var form = $("#payment-form");
+                        // Token
+                        var token = result.token;
+                        // Token in das Formular einfügen damit es an den Server übergeben wird
+                        form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
+                        alert('Teste');
+                        form.get(0).submit();
+                    }
+                    $(".submit-button").removeAttr("disabled");
+                }
+
+                $("#payment-form").submit(function(event) {
+
+                    $('.submit-button').attr("disabled", "disabled");
+
+                    if (paymill.validateHolder($('.elv-holdername').val())) {
+                        $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-holdername"]);
+                        $(".payment_errors").css("display", "inline-block");
+                        $(".submit-button").removeAttr("disabled");
+                        return false;
+                    }
+                    if (validateIBAN($('.elv-iban').val())) {
+                        $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-iban"]);
+                        $(".payment_errors").css("display", "inline-block");
+                        $(".submit-button").removeAttr("disabled");
+                        return false;
+                    }
+                    if ("" === $('.elv-bic').val()) {
+                        $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bic"]);
+                        $(".payment_errors").css("display", "inline-block");
+                        $(".submit-button").removeAttr("disabled");
+                        return false;
+                    }
+
+                    var params = {
+                        iban: $('.elv-iban').val(),
+                        bic: $('.elv-bic').val(),
+                        accountholder: $('.elv-holdername').val()
+                    };
+
+                    paymill.createToken(params, PaymillResponseHandler);
+                    return false;
+                });
+
+                $("#language_switch").click(function() {
+                    var language = formlang;
+                    var newimg;
+
+                    if (formlang === 'en') {
+                        newimg = "image/gb.png";
+                        language = "de";
+                    } else {
+                        newimg = "image/de.png";
+                        language = "en";
+                    }
+
+                    $(this).attr("src", newimg);
+                    translateForm(language);
+                });
+
+                translateForm(formlang);
+            });
+            function validateIBAN(iban) {
+
+                return true;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="paymill_example_form">
+            <div id="top_switch" class="minimal">
+                <img src="image/gb.png" id="language_switch">
+            </div>
+            <form id="payment-form" action="payment.php" method="POST">
+                <header>
+                    <img alt="Logo" src="image/paymill-logo-signet.png">
+                    <h1 class="form-signin-heading">Title stands here</h1>
+                    <h2 class="form-signin-heading">Description 1-year free</h2>
+                </header>
+                <div class="payment_errors">&nbsp;</div>
+                <fieldset>
+                    <label for="elv-iban" class="elv-iban-label field-left"></label>
+                    <input id="elv-iban" class="elv-iban field-left" type="text">
+                    <label for="elv-bic" class="elv-bic-label field-right"></label>
+                    <input id="elv-bic" class="elv-bic field-right" type="text">
+                </fieldset>
+                <fieldset>
+                    <label for="elv-holdername" class="elv-holdername-label field-full"></label>
+                    <input id="elv-holdername" class="elv-holdername field-full" type="text">
+                </fieldset>
+                <fieldset>
+                    <label for="amount" class="amount-label field-left"></label>
+                    <input id="amount" class="amount field-left" type="text" value="10.00" name="amount">
+                    <label for="currency" class="currency-label field-right"></label>
+                    <input id="currency" class="currency field-right" type="text" value="EUR" name="currency">
+                </fieldset>
+                <fieldset id="buttonWrapper">
+                    <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit"></button>
+                </fieldset>
+            </form>
+        </div>
+    </body>
+</html>

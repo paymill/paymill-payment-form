@@ -17,7 +17,10 @@ Since the composer files are already in the project, all you have to do is to ca
 
 [Twitter Bootstrap form for "Direct debit" (with language switcher) ][4]
 
+[Twitter Bootstrap form for "Direct debit(SEPA)" (with language switcher) ][5]
+
 [1]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/index.html
 [2]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/paymill_payment.html
 [3]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/paymill_payment_cc.html
 [4]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/paymill_payment_elv.html
+[5]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/paymill_payment_sepa.html

@@ -20,6 +20,8 @@ translation["de"]["form"]["elv-paymentname"] = 'ELV';
 translation["de"]["form"]["elv-account"] = 'Kontonummer';
 translation["de"]["form"]["elv-holdername"] = 'Kontoinhaber';
 translation["de"]["form"]["elv-bankcode"] = 'Bankleitzahl';
+translation["de"]["form"]["elv-iban"] = 'IBAN';
+translation["de"]["form"]["elv-bic"] = 'BIC';
 
 //Error
 translation["de"]["error"] = new Object();
@@ -30,6 +32,8 @@ translation["de"]["error"]["invalid-card-holdername"] = 'Bitte geben Sie den Kar
 translation["de"]["error"]["invalid-elv-holdername"] = 'Bitte geben Sie den Kontoinhaber an.';
 translation["de"]["error"]["invalid-elv-accountnumber"] = 'Bitte geben Sie eine gültige Kontonummer ein.';
 translation["de"]["error"]["invalid-elv-bankcode"] = 'Bitte geben Sie eine gültige BLZ ein.';
+translation["de"]["error"]["invalid-elv-bic"] = 'Bitte geben Sie eine gültige BIC ein.';
+translation["de"]["error"]["invalid-elv-iban"] = 'Bitte geben Sie eine gültige IBAN ein.';
 
 //English
 //Creditcard
@@ -51,6 +55,8 @@ translation["en"]["form"]["elv-paymentname"] = 'Direct debit';
 translation["en"]["form"]["elv-account"] = 'Account number';
 translation["en"]["form"]["elv-holdername"] = 'Account holder';
 translation["en"]["form"]["elv-bankcode"] = 'Bank code';
+translation["en"]["form"]["elv-iban"] = 'IBAN';
+translation["en"]["form"]["elv-bic"] = 'BIC';
 
 //Error
 translation["en"]["error"] = new Object();
@@ -61,3 +67,5 @@ translation["en"]["error"]["invalid-card-holdername"] = 'Please enter the card h
 translation["en"]["error"]["invalid-elv-holdername"] = 'Please enter the account holder name.';
 translation["en"]["error"]["invalid-elv-accountnumber"] = 'Please enter a valid account number.';
 translation["en"]["error"]["invalid-elv-bankcode"] = 'Please enter a valid bank code.';
+translation["en"]["error"]["invalid-elv-iban"] = 'Please enter a valid IBAN.';
+translation["en"]["error"]["invalid-elv-bic"] = 'Please enter a valid BIC.';

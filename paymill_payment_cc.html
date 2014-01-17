@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://bridge.paymill.de/"></script>
 <script type="text/javascript" src="lang/translation.js"></script>
+<script type="text/javascript" src="js/creditcardBrandDetection.js"></script>
 <script type="text/javascript">
     $.noConflict();
 
@@ -37,8 +38,8 @@
         }
 
         $('.card-number').keyup(function() {
-            var brand = paymill.cardType($('.card-number').val());
-            brand = brand.toLowerCase();
+            var brand = detectCreditcardBranding($('.card-number').val());
+            brand = brand.replace(' ','-');
             $(".card-number")[0].className = $(".card-number")[0].className.replace(/paymill-card-number-.*/g, '');
             if (brand !== 'unknown') {
                 $('#card-number').addClass("paymill-card-number-" + brand);

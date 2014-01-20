@@ -37,7 +37,6 @@
 
         function PaymillResponseHandler(error, result) {
             if (error) {
-                // Zeigt den Fehler überhalb des Formulars an
                 $(".payment_errors").text(error.apierror);
                 $(".payment_errors").css("display","inline-block");
             } else {
@@ -46,7 +45,6 @@
                 var form = $("#payment-form");
                 // Token
                 var token = result.token;
-                // Token in das Formular einfügen damit es an den Server übergeben wird
                 form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
                 alert('Teste');
                 form.get(0).submit();
@@ -58,19 +56,19 @@
 
             $('.submit-button').attr("disabled", "disabled");
 
-            if ('' == $('.elv-holdername').val()) {
+            if ('' === $('.elv-holdername').val()) {
                 $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-holdername"]);
                 $(".payment_errors").css("display","inline-block");
                 $(".submit-button").removeAttr("disabled");
                 return false;
             }
-            if (false == paymill.validateAccountNumber($('.elv-account').val())) {
+            if (false === paymill.validateAccountNumber($('.elv-account').val())) {
                 $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-accountnumber"]);
                 $(".payment_errors").css("display","inline-block");
                 $(".submit-button").removeAttr("disabled");
                 return false;
             }
-            if (false == paymill.validateBankCode($('.elv-bankcode').val())) {
+            if (false === paymill.validateBankCode($('.elv-bankcode').val())) {
                 $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bankcode"]);
                 $(".payment_errors").css("display","inline-block");
                 $(".submit-button").removeAttr("disabled");
@@ -91,7 +89,7 @@
             var language = formlang;
             var newimg;
 
-            if(formlang == 'en'){
+            if(formlang === 'en'){
                 newimg = "image/gb.png";
                 language = "de";
             } else {

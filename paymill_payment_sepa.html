@@ -36,7 +36,6 @@
 
                 function PaymillResponseHandler(error, result) {
                     if (error) {
-                        // Zeigt den Fehler überhalb des Formulars an
                         $(".payment_errors").text(error.apierror);
                         $(".payment_errors").css("display", "inline-block");
                     } else {
@@ -45,7 +44,6 @@
                         var form = $("#payment-form");
                         // Token
                         var token = result.token;
-                        // Token in das Formular einfügen damit es an den Server übergeben wird
                         form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
                         alert('Teste');
                         form.get(0).submit();

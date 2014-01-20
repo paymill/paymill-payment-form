@@ -58,7 +58,6 @@
 
                 function PaymillResponseHandler(error, result) {
                     if (error) {
-                        // Zeigt den Fehler überhalb des Formulars an
                         $(".payment-errors").text(error.apierror);
                         $(".payment-errors").css("display","inline-block");
                     } else {
@@ -67,26 +66,24 @@
                         var form = $("#payment-form");
                         // Token
                         var token = result.token;
-                        // Token in das Formular einfügen damit es an den Server übergeben wird
                         form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
                         form.get(0).submit();
                     }
                     $(".submit-button").removeAttr("disabled");
                 }
                 $("#payment-form").submit(function (event) {
-                    // Absenden Button deaktivieren um weitere Klicks zu vermeiden
                     $('.submit-button').attr("disabled", "disabled");
 
                     paymenttype = $('.paymenttype.disabled').length ? $('.paymenttype.disabled').val() : 'cc';
                     switch (paymenttype) {
                         case "cc":
                             $('.submit-button').attr("disabled", "disabled");
-                            if (false == paymill.validateHolder($('.card-holdername').val())) {
+                            if (false === paymill.validateHolder($('.card-holdername').val())) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                             }
-                            if ((false == paymill.validateCvc($('.card-cvc').val()))) {
+                            if ((false === paymill.validateCvc($('.card-cvc').val()))) {
                                 if(VALIDATE_CVC){
                                     $(".payment-errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
                                     $(".payment-errors").css("display","inline-block");
@@ -95,12 +92,12 @@
                                     $('.card-cvc').val("000");
                                 }
                             }
-                            if (false == paymill.validateCardNumber($('.card-number').val())) {
+                            if (false === paymill.validateCardNumber($('.card-number').val())) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-number"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                             }
-                            if (false == paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
+                            if (false === paymill.validateExpiry($('.card-expiry-month').val(), $('.card-expiry-year').val())) {
                                 $(".payment-errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
@@ -117,19 +114,19 @@
                             break;
 
                         case "elv":
-                            if (false == $('.elv-holdername').val()) {
+                            if (false === $('.elv-holdername').val()) {
                                 $(".payment-errors").text(translation["error"]["invalid-elv-holdername"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
-                            if (false == paymill.validateAccountNumber($('.elv-account').val())) {
+                            if (false === paymill.validateAccountNumber($('.elv-account').val())) {
                                 $(".payment-errors").text(translation["error"]["invalid-elv-accountnumber"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
-                            if (false == paymill.validateBankCode($('.elv-bankcode').val())) {
+                            if (false === paymill.validateBankCode($('.elv-bankcode').val())) {
                                 $(".payment-errors").text(translation["error"]["invalid-elv-bankcode"]);
                                 $(".payment-errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
@@ -148,7 +145,7 @@
                 $("#language_switch").click(function(){
                     var language = formlang;
                     var newimg;
-                    if(formlang == 'en'){
+                    if(formlang === 'en'){
                         newimg = "image/gb.png";
                         language = "de";
                     }else{
@@ -163,7 +160,7 @@
                     if($(this).hasClass('btn-primary disabled')){
                         return false;
                     }
-                    if($(this).val()=='cc') {
+                    if($(this).val()==='cc') {
                         $('#btn-paymenttype-elv').removeClass('btn-primary disabled');
                         $('#btn-paymenttype-cc').addClass('btn-primary disabled');
                         $('#payment-form-cc').toggle();

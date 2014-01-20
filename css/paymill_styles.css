@@ -219,13 +219,22 @@ label {
 }
 
 .paymill-card-number-carte-bleue {
-    background: #EAEFF1  url('../image/32x20_unionpay.png')no-repeat center right !important;
+    background: #EAEFF1  url('../image/32x20_carte-bleue.png')no-repeat center right !important;
     }
 
-.paymill-card-number-diners {
+.paymill-card-number-diners-club {
     background: #EAEFF1  url('../image/32x20_dinersclub.png')no-repeat center right !important;
 }
 
+.paymill-card-number-china-unionpay {
+    background: #EAEFF1  url('../image/32x20_unionpay.png') no-repeat center right !important;
+}
 .paymill-card-number-discover {
     background: #EAEFF1  url('../image/32x20_discover.png') no-repeat center right !important;
+}
+.paymill-card-number-carta-si {
+    background: #EAEFF1  url('../image/32x20_carta-si.png') no-repeat center right !important;
+}
+.paymill-card-number-dankort {
+    background: #EAEFF1  url('../image/32x20_dankort.png') no-repeat center right !important;
 }

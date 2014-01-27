@@ -9,14 +9,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://bridge.paymill.de/"></script>
         <script type="text/javascript" src="lang/translation.js"></script>
+        <script type="text/javascript" src="js/Iban.js"></script>
         <script type="text/javascript">
             $.noConflict();
 
-            jQuery(document).ready(function($) {
+            jQuery(document).ready(function($) 
+            {
                 var formlang = 'de';
-                var doc = document;
-                var body = $(doc.body);
-                function translateForm(language) {
+                function translateForm(language) 
+                {
                     formlang = language;
                     var lang;
                     if (translation[language] === undefined) {
@@ -34,7 +35,8 @@
                     $(".submit-button").text(lang["form"]["submit-button"]);
                 }
 
-                function PaymillResponseHandler(error, result) {
+                function PaymillResponseHandler(error, result) 
+                {
                     if (error) {
                         $(".payment_errors").text(error.apierror);
                         $(".payment_errors").css("display", "inline-block");
@@ -45,37 +47,42 @@
                         // Token
                         var token = result.token;
                         form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
-                        alert('Teste');
                         form.get(0).submit();
                     }
                     $(".submit-button").removeAttr("disabled");
                 }
 
-                $("#payment-form").submit(function(event) {
+                $("#payment-form").submit(function() 
+                {
+                    iban = new Iban();
 
                     $('.submit-button').attr("disabled", "disabled");
 
-                    if (paymill.validateHolder($('.elv-holdername').val())) {
+                    if (!paymill.validateHolder($('.elv-holdername').val())) {
                         $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-holdername"]);
                         $(".payment_errors").css("display", "inline-block");
                         $(".submit-button").removeAttr("disabled");
                         return false;
                     }
-                    if (validateIBAN($('.elv-iban').val())) {
+                    
+                    if (!iban.validate($('.elv-iban').val())) {
                         $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-iban"]);
                         $(".payment_errors").css("display", "inline-block");
                         $(".submit-button").removeAttr("disabled");
                         return false;
                     }
+                    
                     if ("" === $('.elv-bic').val()) {
                         $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bic"]);
                         $(".payment_errors").css("display", "inline-block");
                         $(".submit-button").removeAttr("disabled");
                         return false;
                     }
+                    
+                    ibanData = $('.elv-iban').val().replace(/\s+/g, "");
 
                     var params = {
-                        iban: $('.elv-iban').val(),
+                        iban: ibanData,
                         bic: $('.elv-bic').val(),
                         accountholder: $('.elv-holdername').val()
                     };
@@ -84,7 +91,8 @@
                     return false;
                 });
 
-                $("#language_switch").click(function() {
+                $("#language_switch").click(function() 
+                {
                     var language = formlang;
                     var newimg;
 
@@ -102,10 +110,6 @@
 
                 translateForm(formlang);
             });
-            function validateIBAN(iban) {
-
-                return true;
-            }
         </script>
     </head>
     <body>

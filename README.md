@@ -6,8 +6,12 @@ Example html form for Paymill payments.
 Use composer to include the paymill lib.
 Since the composer files are already in the project, all you have to do is to call composer -install
 
+##Skeuocard-Setup
+Download https://github.com/kenkeiter/skeuocard/zipball/master and unzip that folder. After that delete all files except the folders (fonts,images,javascripts,styles).
 
-##Try now: 
+Then you download paymill-payment-skeuocard.html and move it to the skeuocard folder (that one where you deleted the files). Enjoy.
+
+##Try now:
 
 [Simple forms for "Credit Card", "Credit Card 3D secure" and "Direct debit"][1]
 

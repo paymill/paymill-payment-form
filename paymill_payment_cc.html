@@ -10,7 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://bridge.paymill.de/"></script>
 <script type="text/javascript" src="lang/translation.js"></script>
-<script type="text/javascript" src="js/creditcardBrandDetection.js"></script>
+<script type="text/javascript" src="js/BrandDetection.js"></script>
 <script type="text/javascript">
     $.noConflict();
 
@@ -38,17 +38,21 @@
         }
 
         $('.card-number').keyup(function() {
-            var brand = detectCreditcardBranding($('.card-number').val());
-            brand = brand.replace(' ','-');
+            var detector = new BrandDetection();
+            var brand = detector.detect($('.card-number').val());
             $(".card-number")[0].className = $(".card-number")[0].className.replace(/paymill-card-number-.*/g, '');
             if (brand !== 'unknown') {
                 $('#card-number').addClass("paymill-card-number-" + brand);
-            }
 
-            if (brand !== 'maestro') {
-                VALIDATE_CVC = true;
-            } else {
-                VALIDATE_CVC = false;
+                if (!detector.validate($('.card-number').val())) {
+                    $('#card-number').addClass("paymill-card-number-grayscale");
+                }
+
+                if (brand !== 'maestro') {
+                    VALIDATE_CVC = true;
+                } else {
+                    VALIDATE_CVC = false;
+                }
             }
         });
 

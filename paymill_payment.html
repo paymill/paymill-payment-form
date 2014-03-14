@@ -42,17 +42,21 @@
                 }
 
                 $('.card-number').keyup(function() {
-                    var brand = paymill.cardType($('.card-number').val());
-                    brand = brand.toLowerCase();
+                    var detector = new BrandDetection();
+                    var brand = detector.detect($('.card-number').val());
                     $(".card-number")[0].className = $(".card-number")[0].className.replace(/paymill-card-number-.*/g, '');
                     if (brand !== 'unknown') {
                         $('#card-number').addClass("paymill-card-number-" + brand);
-                    }
 
-                    if (brand !== 'maestro') {
-                        VALIDATE_CVC = true;
-                    } else {
-                        VALIDATE_CVC = false;
+                        if (!detector.validate($('.card-number').val())) {
+                            $('#card-number').addClass("paymill-card-number-grayscale");
+                        }
+
+                        if (brand !== 'maestro') {
+                            VALIDATE_CVC = true;
+                        } else {
+                            VALIDATE_CVC = false;
+                        }
                     }
                 });
 

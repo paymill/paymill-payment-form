@@ -96,8 +96,6 @@
 
                 $("#payment-form").submit(function(event) {
                     $('.submit-button').attr("disabled", "disabled");
-                    console.log(isSepa());
-                    console.log(validate());
                     if (validate()) {
                         var params = null;
 
@@ -115,7 +113,6 @@
                                 accountholder: $('.elv-holdername').val()
                             };
                         }
-                        console.log(params);
                         paymill.createToken(params, PaymillResponseHandler);
 
                     }

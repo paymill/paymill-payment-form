@@ -66,14 +66,14 @@
                             $(".submit-button").removeAttr("disabled");
                             return false;
                         }
-                        if ("" === $('.elv-bankcode').val()) {
+                        if ($('.elv-bankcode').val().length !== 9 && $('.elv-bankcode').val().length !== 11) {
                             $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bic"]);
                             $(".payment_errors").css("display", "inline-block");
                             $(".submit-button").removeAttr("disabled");
                             return false;
                         }
                     } else {
-                        if (!paymill.validateAccountNumber($('.elv-account').val())) {
+                        if (!paymill.validateAccountNumber($('.elv-account').val()) || $('.elv-bankcode').val().length > 10) {
                             $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-accountnumber"]);
                             $(".payment_errors").css("display", "inline-block");
                             $(".submit-button").removeAttr("disabled");

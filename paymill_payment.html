@@ -140,19 +140,19 @@
 
                         case "elv":
                             $('.submit-button').attr("disabled", "disabled");
-                            if (false == $('.elv-holdername').val()) {
+                            if (!$('.elv-holdername').val()) {
                                 $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-holdername"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
-                            if (false == paymill.validateAccountNumber($('.elv-account').val())) {
+                            if (!paymill.validateAccountNumber($('.elv-account').val())) {
                                 $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-accountnumber"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");
                                 return false;
                             }
-                            if (false == paymill.validateBankCode($('.elv-bankcode').val())) {
+                            if (!paymill.validateBankCode($('.elv-bankcode').val()) || $('.elv-bankcode').val().length > 10) {
                                 $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bankcode"]);
                                 $(".payment_errors").css("display","inline-block");
                                 $(".submit-button").removeAttr("disabled");

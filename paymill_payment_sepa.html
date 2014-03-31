@@ -13,10 +13,10 @@
         <script type="text/javascript">
             $.noConflict();
 
-            jQuery(document).ready(function($) 
+            jQuery(document).ready(function($)
             {
                 var formlang = 'de';
-                function translateForm(language) 
+                function translateForm(language)
                 {
                     formlang = language;
                     var lang;
@@ -35,7 +35,7 @@
                     $(".submit-button").text(lang["form"]["submit-button"]);
                 }
 
-                function PaymillResponseHandler(error, result) 
+                function PaymillResponseHandler(error, result)
                 {
                     if (error) {
                         $(".payment_errors").text(error.apierror);
@@ -52,7 +52,7 @@
                     $(".submit-button").removeAttr("disabled");
                 }
 
-                $("#payment-form").submit(function() 
+                $("#payment-form").submit(function()
                 {
                     iban = new Iban();
 
@@ -64,21 +64,21 @@
                         $(".submit-button").removeAttr("disabled");
                         return false;
                     }
-                    
+
                     if (!iban.validate($('.elv-iban').val())) {
                         $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-iban"]);
                         $(".payment_errors").css("display", "inline-block");
                         $(".submit-button").removeAttr("disabled");
                         return false;
                     }
-                    
-                    if ("" === $('.elv-bic').val()) {
+
+                    if ($('.elv-bic').val().length !== 9 && $('.elv-bic').val().length !== 11) {
                         $(".payment_errors").text(translation[formlang]["error"]["invalid-elv-bic"]);
                         $(".payment_errors").css("display", "inline-block");
                         $(".submit-button").removeAttr("disabled");
                         return false;
                     }
-                    
+
                     ibanData = $('.elv-iban').val().replace(/\s+/g, "");
 
                     var params = {
@@ -91,7 +91,7 @@
                     return false;
                 });
 
-                $("#language_switch").click(function() 
+                $("#language_switch").click(function()
                 {
                     var language = formlang;
                     var newimg;

@@ -23,7 +23,7 @@ Then you download paymill-payment-skeuocard.html and move it to the skeuocard fo
 
 [Twitter Bootstrap form for "Direct debit(SEPA)" (with language switcher) ][5]
 
-[Twitter Bootstrap form for "Direct debit(Combined with SEPA)" (with language switcher) ][5]
+[Twitter Bootstrap form for "Direct debit(Combined with SEPA)" (with language switcher) ][6]
 
 [1]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/index.html
 [2]: http://htmlpreview.github.com/?https://github.com/paymill/paymill-payment-form/blob/master/paymill_payment.html

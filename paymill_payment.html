@@ -128,7 +128,7 @@
                                 return false;
                             }
                             var params = {
-                                amount_int:     $('.amount').val().replace(/[\.,]/, '.') * 100,  // E.g. "15" for 0.15 Eur
+                                amount_int:     parseInt($('.amount').val().replace(/[\.,]/, '.') * 100),  // E.g. "15" for 0.15 Eur
                                 currency:       $('.currency').val(),    // ISO 4217 e.g. "EUR"
                                 number:         $('.card-number').val(),
                                 exp_month:      expiry[0],
